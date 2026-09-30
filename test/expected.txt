@@ -1,0 +1,49 @@
+high|policy_using_true|public.bad_check_true_update policy "bad_check_true_update_p"
+high|policy_using_true|public.bad_true_all policy "bad_true_all_p"
+high|policy_using_true|public.bad_true_delete policy "bad_true_delete_p"
+high|policy_using_true|public.bad_true_insert policy "bad_true_insert_p"
+high|policy_using_true|public.bad_true_update policy "bad_true_update_p"
+high|rls_disabled|app.bad_app_rls_off
+high|rls_disabled|public.bad_column_grant_rls_off
+high|rls_disabled|public.bad_part_parent
+high|rls_disabled|public.bad_rls_off
+high|storage_policy_using_true|storage.objects policy "bad_storage_anon_upload"
+medium|foreign_table_exposed|public.bad_foreign
+medium|materialized_view_exposed|public.bad_matview
+medium|partition_rls_disabled|public.bad_hidden_parent_part_2025
+medium|partition_rls_disabled|public.bad_nest_leaf_2025
+medium|partition_rls_disabled|public.bad_nest_mid
+medium|partition_rls_disabled|public.bad_part_open_2025
+medium|partition_rls_disabled|public.bad_srv_nest2_mid
+medium|partition_rls_disabled|public.bad_srv_nest_leaf
+medium|partition_rls_disabled|public.bad_srv_part_2025
+medium|policy_not_tied_to_caller|public.bad_anon_delete policy "bad_anon_delete_p"
+medium|policy_not_tied_to_caller|public.bad_anon_update policy "bad_anon_update_p"
+medium|policy_not_tied_to_caller|public.bad_authed_no_uid policy "bad_authed_no_uid_p"
+medium|policy_not_tied_to_caller|public.bad_claim_literal policy "bad_claim_literal_p"
+medium|policy_not_tied_to_caller|public.bad_fake_auth_ref policy "bad_fake_auth_ref_p"
+medium|policy_not_tied_to_caller|public.bad_group_files policy "bad_group_files_p"
+medium|policy_not_tied_to_caller|public.bad_logged_in_check policy "bad_logged_in_check_p"
+medium|policy_not_tied_to_caller|public.bad_logged_in_only policy "bad_logged_in_only_p"
+medium|policy_not_tied_to_caller|public.bad_logged_in_update policy "bad_logged_in_update_p"
+medium|policy_not_tied_to_caller|public.bad_public_select_logged_in policy "bad_public_select_logged_in_p"
+medium|policy_not_tied_to_caller|public.bad_public_update policy "bad_public_update_p"
+medium|policy_not_tied_to_caller|public.bad_role_authed policy "bad_role_authed_p"
+medium|policy_not_tied_to_caller|public.bad_role_public_read policy "bad_role_public_read_p"
+medium|policy_not_tied_to_caller|public.bad_role_public_update policy "bad_role_public_update_p"
+medium|policy_not_tied_to_caller|public.bad_soft_delete policy "bad_soft_delete_p"
+medium|policy_using_true|public.bad_part_true_2027 policy "bad_part_true_2027_p"
+medium|policy_using_true|public.bad_true_default_role policy "bad_true_default_role_p"
+medium|policy_using_true|public.bad_true_select policy "bad_true_select_p"
+medium|security_definer_executable|public.bad_secdef(a integer, b text)
+medium|security_definer_executable|public.bad_secdef_service_only()
+medium|security_definer_executable|public.bad_secdef_unreached()
+medium|storage_policy_not_tied_to_caller|storage.objects policy "bad_storage_authed_update"
+medium|view_not_security_invoker|public.bad_view
+low|rls_no_policies|1 table in app
+low|rls_no_policies|2 tables in public
+low|security_definer_rls_helper|public.bad_secdef_helper()
+low|security_definer_rls_helper|public.bad_secdef_restrictive_helper()
+low|storage_bucket_no_limits|storage bucket "bad_no_limits_bucket"
+low|storage_bucket_no_limits|storage bucket "bad_no_mime_bucket"
+low|storage_bucket_public|storage bucket "bad_public_bucket"
