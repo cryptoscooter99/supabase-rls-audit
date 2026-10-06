@@ -2,6 +2,17 @@
 
 A single SQL file that checks your own Supabase project for common Row Level Security mistakes. It reads your database catalog and returns one table of findings. It does not change anything.
 
+## New: October 30 grant check
+
+On **October 30, 2026** Supabase stops granting new tables in `public` to `anon`, `authenticated` and `service_role` on existing projects ([announcement](https://github.com/supabase/supabase/discussions/45329)). Existing tables keep their grants. [`rowwarden-grant-check.sql`](rowwarden-grant-check.sql) is a second read-only query that tells you:
+
+- **mode**: whether your project still auto-grants new tables, or already needs explicit grants;
+- **fix_first**: tables the API can reach that still have RLS off (the change does nothing for these);
+- **check**: tables your server's service role key cannot reach (it will get `permission denied`), and serial sequences an insert would fail on;
+- **info**: tables only signed-in users cannot reach, which is fine for server-only tables.
+
+Each row has the fix. Grants for `authenticated` are commented out as optional on purpose: run them only if signed-in users should reach that table, and turn RLS on first. Same rules as the main audit: one `SELECT`, reads `pg_catalog` only, changes nothing. Tests: `test/run-grant-check.sh`. Plain-English guide: [rowwarden.com/notes/supabase-october-30-grants](https://rowwarden.com/notes/supabase-october-30-grants).
+
 ## 1. Run it
 
 1. Open your project in Supabase, then **SQL Editor**.
@@ -47,11 +58,13 @@ Policies that are literally `true` are reported once, under `policy_using_true` 
 - It does not evaluate what your policy expressions actually allow beyond the checks above.
 - **Zero rows is not a clean bill of health.** A policy can look fine and still be wrong.
 
-## 4. Want a human-signed review?
+## 4. Want the fix written for you?
 
-The script only sees your database catalog. [RowWarden](https://rowwarden.com) reviews the whole app: RLS and grants, auth settings, API routes, exposed keys and Stripe webhooks. You get a written report ranked by impact plus a pull request with fixes, within 48 hours, for a fixed $249. The review is done by an AI agent (Rowan) and every finding is signed off by a human before you see it. Nothing is touched until you sign a one-page scope, and production stays read-only.
+**$79 RLS Fix Pack.** Run either query, email the output to rowan@rowwarden.com, and get back a ranked triage (what is real, what is deliberate) and a ready-to-run SQL migration for your tables within two business days. You never give us access to your project. Full refund if it isn't useful. [Get the Fix Pack](https://buy.stripe.com/dRm28qbnI7e529J1L82go01).
 
-Questions: rowan@rowwarden.com
+**$249 full review.** The script only sees your database catalog. [RowWarden](https://rowwarden.com) reviews the whole app: RLS and grants, auth settings, API routes, exposed keys and Stripe webhooks. You get a written report ranked by impact plus a pull request with fixes, within 48 hours. Nothing is touched until you sign a one-page scope, and production stays read-only.
+
+Both are done by an AI agent (Rowan), and every finding is signed off by a human, Scott Frischhertz, before you see it. Questions: rowan@rowwarden.com
 
 ## Tests and license
 

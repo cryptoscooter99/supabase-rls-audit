@@ -1,0 +1,13 @@
+fix_first|rls_off_reachable|public.bad_parted_p1
+fix_first|rls_off_reachable|public.bad_rls_off
+check|no_api_grant|public.bad_new
+check|no_api_grant|public.bad_new_matview
+check|no_api_grant|public.bad_new_rls_off
+check|no_api_grant|public.bad_new_view
+check|no_api_grant|public.bad_parted
+check|sequence_no_usage|public.bad_seq_id_seq
+check|sequence_no_usage|public.bad_seq_id_seq
+check|sequence_no_usage|public.shared_seq
+check|sequence_no_usage|public.shared_seq
+info|no_api_grant|public.info_server_only
+mode|auto_grant|new tables in public

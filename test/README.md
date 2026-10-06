@@ -52,3 +52,7 @@ export PGHOST=localhost PGPORT=5432 PGUSER=postgres PGPASSWORD=postgres
 ```
 
 Needs only `bash` and `psql` besides the scratch server. Roles are cluster-wide, so the fixture creates `anon`, `authenticated` and `service_role` on the scratch server if they do not exist. Superuser is needed for the fixture's foreign-data wrapper and for marking two objects as extension members.
+
+## Grant check
+
+`run-grant-check.sh` loads `grant-fixture.sql` (a `public` schema before and after the October 30 switch: auto-granted tables, a deliberately server-only table, tables created after the switch with and without RLS, a view, serial, shared and identity sequences, column-only grants, and a partition with RLS off), runs `../rowwarden-grant-check.sql` inside `BEGIN READ ONLY`, and checks the findings against `grant-expected.txt`. It also checks that grants for `authenticated` are optional and preceded by enabling RLS when RLS is off, that global default privileges count as the old behaviour, and that an empty database returns only the mode row.
