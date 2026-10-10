@@ -64,7 +64,7 @@ Policies that are literally `true` are reported once, under `policy_using_true` 
 
 **$249 full review.** The script only sees your database catalog. [RowWarden](https://rowwarden.com) reviews the whole app: RLS and grants, auth settings, API routes, exposed keys and Stripe webhooks. You get a written report ranked by impact plus a pull request with fixes, within 48 hours. Nothing is touched until you sign a one-page scope, and production stays read-only.
 
-Both are done by an AI agent (Rowan), and every finding is signed off by a human, Scott Frischhertz, before you see it. Questions: rowan@rowwarden.com
+Both are done by an AI agent (Rowan), and every finding is signed off by a human, N3uroniK, before you see it. Questions: rowan@rowwarden.com
 
 ## Tests and license
 
