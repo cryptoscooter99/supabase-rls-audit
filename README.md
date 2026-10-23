@@ -11,7 +11,13 @@ On **October 30, 2026** Supabase stops granting new tables in `public` to `anon`
 - **check**: tables your server's service role key cannot reach (it will get `permission denied`), and serial sequences an insert would fail on;
 - **info**: tables only signed-in users cannot reach, which is fine for server-only tables.
 
-Each row has the fix. Grants for `authenticated` are commented out as optional on purpose: run them only if signed-in users should reach that table, and turn RLS on first. Same rules as the main audit: one `SELECT`, reads `pg_catalog` only, changes nothing. Tests: `test/run-grant-check.sh`. Plain-English guide: [rowwarden.com/notes/supabase-october-30-grants](https://rowwarden.com/notes/supabase-october-30-grants).
+Each row has the fix. Grants for `authenticated` are commented out as optional on purpose: run them only if signed-in users should reach that table, and turn RLS on first. Same rules as the main audit: one `SELECT`, reads `pg_catalog` only, changes nothing. Tests: `test/run-grant-check.sh`. Plain-English guide: [rowwarden.com/notes/supabase-october-30-grants](https://www.rowwarden.com/notes/supabase-october-30-grants).
+
+RowWarden write-ups for errors and warnings you may hit, each with a read-only test and the fix:
+
+- `permission denied for table` (42501) on a new table: [test and fix](https://www.rowwarden.com/notes/supabase-permission-denied-for-table)
+- `permission denied for sequence` on insert: [test and fix](https://www.rowwarden.com/notes/supabase-permission-denied-for-sequence)
+- Security Advisor "Public Can See Object in GraphQL Schema" (lint 0026; lint 0027 is the same warning for signed-in users): [what it means and what to change](https://www.rowwarden.com/notes/supabase-graphql-schema-visible-anon)
 
 ## 1. Run it
 
