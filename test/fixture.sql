@@ -128,6 +128,9 @@ GRANT SELECT ON app.bad_app_rls_off TO anon, authenticated;
 CREATE TABLE public.bad_true_select (id int);                     -- check 3 medium
 ALTER TABLE public.bad_true_select ENABLE ROW LEVEL SECURITY;
 CREATE POLICY bad_true_select_p ON public.bad_true_select FOR SELECT TO anon USING (true);
+CREATE TABLE public.bad_true_select_authed (id int);              -- check 3 medium, signed-in users only
+ALTER TABLE public.bad_true_select_authed ENABLE ROW LEVEL SECURITY;
+CREATE POLICY bad_true_select_authed_p ON public.bad_true_select_authed FOR SELECT TO authenticated USING (true);
 
 CREATE TABLE public.bad_true_default_role (id int);               -- check 3 medium, no TO clause = PUBLIC
 ALTER TABLE public.bad_true_default_role ENABLE ROW LEVEL SECURITY;

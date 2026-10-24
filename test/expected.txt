@@ -35,6 +35,7 @@ medium|policy_not_tied_to_caller|public.bad_soft_delete policy "bad_soft_delete_
 medium|policy_using_true|public.bad_part_true_2027 policy "bad_part_true_2027_p"
 medium|policy_using_true|public.bad_true_default_role policy "bad_true_default_role_p"
 medium|policy_using_true|public.bad_true_select policy "bad_true_select_p"
+medium|policy_using_true|public.bad_true_select_authed policy "bad_true_select_authed_p"
 medium|security_definer_executable|public.bad_secdef(a integer, b text)
 medium|security_definer_executable|public.bad_secdef_service_only()
 medium|security_definer_executable|public.bad_secdef_unreached()

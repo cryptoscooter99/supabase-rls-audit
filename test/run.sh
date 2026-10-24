@@ -141,7 +141,9 @@ else
   expect_text policy_using_true 'public.bad_true_update policy "bad_true_update_p"' \
     'update every row with any values'
   expect_text policy_using_true 'public.bad_true_select policy "bad_true_select_p"' \
-    'read every row' 'any values'
+    'read every row, so the table is effectively public' 'any values'
+  expect_text policy_using_true 'public.bad_true_select_authed policy "bad_true_select_authed_p"' \
+    'Any signed-in user can read every row, other users'"'"' rows included' 'effectively public'
   expect_text policy_not_tied_to_caller 'public.bad_logged_in_only policy "bad_logged_in_only_p"' \
     'only condition is that the caller is signed in'
   expect_text policy_not_tied_to_caller 'public.bad_logged_in_check policy "bad_logged_in_check_p"' \

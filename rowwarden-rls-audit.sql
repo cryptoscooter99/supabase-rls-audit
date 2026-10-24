@@ -369,7 +369,9 @@ c3 AS (
                 WHEN p.polcmd = 'r' THEN
                   CASE WHEN p.is_storage
                        THEN 'download every file in every bucket, private buckets included'
-                       ELSE 'read every row, so the table is effectively public' END
+                       ELSE 'read every row, '
+                            || CASE WHEN p.anon_reach THEN 'so the table is effectively public'
+                                    ELSE 'other users'' rows included' END END
                 WHEN p.polcmd = 'a' THEN
                   CASE WHEN p.is_storage
                        THEN 'upload files with any values, to any bucket and path'

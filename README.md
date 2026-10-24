@@ -66,7 +66,7 @@ Policies that are literally `true` are reported once, under `policy_using_true` 
 
 ## 4. Want the fix written for you?
 
-**$79 RLS Fix Pack.** Run either query, email the output to rowan@rowwarden.com, and get back a ranked triage (what is real, what is deliberate) and a ready-to-run SQL migration for your tables within two business days. You never give us access to your project. Full refund if it isn't useful. [Get the Fix Pack](https://buy.stripe.com/dRm28qbnI7e529J1L82go01).
+**$79 RLS Fix Pack.** Run either query, email the output to rowan@rowwarden.com, and get back a ranked triage (what is real, what is deliberate) and a ready-to-run SQL migration for your tables within two business days. You never give us access to your project. Full refund if it isn't useful. [Get the Fix Pack](https://buy.stripe.com/dRm28qbnI7e529J1L82go01). See a [full sample on a fictional project](https://www.rowwarden.com/fix-pack-sample) first.
 
 **$249 full review.** The script only sees your database catalog. [RowWarden](https://rowwarden.com) reviews the whole app: RLS and grants, auth settings, API routes, exposed keys and Stripe webhooks. You get a written report ranked by impact plus a pull request with fixes, within 48 hours. Nothing is touched until you sign a one-page scope, and production stays read-only.
 
