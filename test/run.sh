@@ -119,10 +119,23 @@ else
   fi
 
   # Full five-column output is well formed: five populated fields, valid severity.
-  if printf '%s\n' "$full" | awk -F'|' 'NF != 5 || $1 !~ /^(high|medium|low)$/ || $2=="" || $3=="" || $4=="" || $5=="" {exit 1}'; then
+  if printf '%s\n' "$full" | awk -F'|' 'NF != 5 || $1 !~ /^(high|medium|low|info)$/ || $2=="" || $3=="" || $4=="" || $5=="" {exit 1}'; then
     ok "all five columns populated, severities valid"
   else
     bad "malformed rows in full output"
+  fi
+
+  # The next_step row is the last row, appears once, and is the only info row.
+  if [ "$(printf '%s\n' "$out" | tail -n 1)" = "info|next_step|rowan@rowwarden.com" ]; then
+    ok "last row is the next_step row"
+  else
+    bad "last row is not the next_step row"
+  fi
+  if [ "$(printf '%s\n' "$full" | cut -d'|' -f1 | grep -c '^info$')" = 1 ] \
+     && [ "$(printf '%s\n' "$full" | cut -d'|' -f2 | grep -c '^next_step$')" = 1 ]; then
+    ok "exactly one info row, and it is the next_step row"
+  else
+    bad "info / next_step rows are not exactly one"
   fi
 
   # Item 1: with auth on the search_path Postgres prints uid() instead of

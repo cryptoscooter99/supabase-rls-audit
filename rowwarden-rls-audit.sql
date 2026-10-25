@@ -4,7 +4,9 @@
 --   Inspects the catalog of the database you run it in and returns ONE result
 --   set of findings: severity (high / medium / low), check, object,
 --   why_it_matters, fix. Zero rows means nothing was flagged. That is the
---   floor, not proof of safety (see README.md).
+--   floor, not proof of safety (see README.md). When something is flagged,
+--   one last row (severity info, check next_step) says where to send the
+--   output if you want help fixing it.
 --
 --   Apart from storage bucket settings, it only reports objects the API roles
 --   can reach: anon or authenticated must have USAGE on the schema and a
@@ -20,9 +22,13 @@
 --
 -- How to use
 --   Paste this whole file into your own project's SQL Editor and run it.
---   Nothing leaves your database.
+--   The script sends nothing anywhere; sharing its output is up to you.
 --
 -- Free from RowWarden: https://rowwarden.com
+--
+-- Want help fixing the flagged rows? Email the output to rowan@rowwarden.com. For $79 you get a
+-- ranked triage and one ready-to-run migration within two business days, without giving anyone
+-- access to your project. Full refund if it isn't useful. Sample: https://www.rowwarden.com/fix-pack-sample
 
 WITH
 -- Every non-system schema. `public` is the main case.
@@ -634,10 +640,10 @@ c8 AS (
   WHERE NOT t.ext_owned
     AND ((t.relkind = 'm' AND (t.anon_read OR t.auth_read))
          OR t.relkind = 'f')
-)
+),
 
-SELECT f.severity, f."check", f.object, f.why_it_matters, f.fix
-FROM (
+-- All findings from the checks above.
+findings AS (
   SELECT * FROM c1
   UNION ALL SELECT * FROM c1p
   UNION ALL SELECT * FROM c2
@@ -648,8 +654,23 @@ FROM (
   UNION ALL SELECT * FROM c7a
   UNION ALL SELECT * FROM c7b
   UNION ALL SELECT * FROM c8
+),
+
+-- last row: where to send this output (only when something was flagged;
+-- a clean project still returns zero rows)
+next_step AS (
+  SELECT 'info', 'next_step', 'rowan@rowwarden.com',
+         'Want help fixing these? Email this output to rowan@rowwarden.com. For $79 you get a ranked triage and one ready-to-run migration within two business days, without giving anyone access to your project. Full refund if it isn''t useful.',
+         'Sample on a fictional project: https://www.rowwarden.com/fix-pack-sample'
+  WHERE EXISTS (SELECT 1 FROM findings)
+)
+
+SELECT f.severity, f."check", f.object, f.why_it_matters, f.fix
+FROM (
+  SELECT * FROM findings
+  UNION ALL SELECT * FROM next_step
 ) AS f(severity, "check", object, why_it_matters, fix)
 ORDER BY
-  CASE f.severity WHEN 'high' THEN 1 WHEN 'medium' THEN 2 ELSE 3 END,
+  CASE f.severity WHEN 'high' THEN 1 WHEN 'medium' THEN 2 WHEN 'low' THEN 3 ELSE 4 END,
   f."check" COLLATE "C",
   f.object COLLATE "C";

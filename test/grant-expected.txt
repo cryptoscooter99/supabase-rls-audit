@@ -11,3 +11,4 @@ check|sequence_no_usage|public.shared_seq
 check|sequence_no_usage|public.shared_seq
 info|no_api_grant|public.info_server_only
 mode|auto_grant|new tables in public
+info|next_step|rowan@rowwarden.com

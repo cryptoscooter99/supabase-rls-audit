@@ -12,6 +12,10 @@
 -- Columns: status (fix_first / check / info / mode), check, object, detail, fix.
 -- Optional statements in the fix column are commented out with -- on purpose: run them only if
 -- that role should reach the table.
+--
+-- Want help fixing the flagged rows? Email the output to rowan@rowwarden.com. For $79 you get a
+-- ranked triage and one ready-to-run migration within two business days, without giving anyone
+-- access to your project. Full refund if it isn't useful. Sample: https://www.rowwarden.com/fix-pack-sample
 with api_roles(role) as (
   select v.r from (values ('anon'), ('authenticated'), ('service_role')) v(r)
   where exists (select 1 from pg_roles where rolname = v.r)
@@ -138,7 +142,16 @@ rows_ as (
   join priv p on p.oid = cs.table_oid and p.role <> 'anon' and not p.relispartition
   where has_column_privilege(p.role, cs.table_oid, cs.adnum, 'INSERT')
     and not has_sequence_privilege(p.role, cs.seq_oid, 'USAGE')
+),
+-- last row: where to send this output (only when something was flagged: fix_first or check)
+with_next as (
+  select * from rows_
+  union all
+  select 5, 'info', 'next_step', 'rowan@rowwarden.com',
+         'Want help fixing these? Email this output to rowan@rowwarden.com. For $79 you get a ranked triage and one ready-to-run migration within two business days, without giving anyone access to your project. Full refund if it isn''t useful.',
+         'Sample on a fictional project: https://www.rowwarden.com/fix-pack-sample'
+  where exists (select 1 from rows_ where status in ('fix_first', 'check'))
 )
 select status, check_ as "check", object, detail, fix
-from rows_
+from with_next
 order by ord, object, check_, detail;

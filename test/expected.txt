@@ -48,3 +48,4 @@ low|security_definer_rls_helper|public.bad_secdef_restrictive_helper()
 low|storage_bucket_no_limits|storage bucket "bad_no_limits_bucket"
 low|storage_bucket_no_limits|storage bucket "bad_no_mime_bucket"
 low|storage_bucket_public|storage bucket "bad_public_bucket"
+info|next_step|rowan@rowwarden.com

@@ -11,6 +11,8 @@ On **October 30, 2026** Supabase stops granting new tables in `public` to `anon`
 - **check**: tables your server's service role key cannot reach (it will get `permission denied`), and serial sequences an insert would fail on;
 - **info**: tables only signed-in users cannot reach, which is fine for server-only tables.
 
+When a `fix_first` or `check` row is returned, the last row is an `info` / `next_step` row saying where to send the output if you want help fixing it.
+
 Each row has the fix. Grants for `authenticated` are commented out as optional on purpose: run them only if signed-in users should reach that table, and turn RLS on first. Same rules as the main audit: one `SELECT`, reads `pg_catalog` only, changes nothing. Tests: `test/run-grant-check.sh`. Plain-English guide: [rowwarden.com/notes/supabase-october-30-grants](https://www.rowwarden.com/notes/supabase-october-30-grants).
 
 RowWarden write-ups for errors and warnings you may hit, each with a read-only test and the fix:
@@ -24,7 +26,7 @@ RowWarden write-ups for errors and warnings you may hit, each with a read-only t
 1. Open your project in Supabase, then **SQL Editor**.
 2. Paste the whole contents of [`rowwarden-rls-audit.sql`](rowwarden-rls-audit.sql) and run it.
 
-You get one result set with these columns: `severity` (high / medium / low), `check`, `object`, `why_it_matters`, `fix`. Zero rows means nothing was flagged. That is the floor, not proof your app is safe (see Limits).
+You get one result set with these columns: `severity` (high / medium / low), `check`, `object`, `why_it_matters`, `fix`. Zero rows means nothing was flagged. That is the floor, not proof your app is safe (see Limits). When something is flagged, the last row has severity `info` and check `next_step`: it says where to send the output if you want help fixing it.
 
 The file is a single `SELECT` that only reads `pg_catalog` and, if it exists, `storage.buckets`. It creates nothing and writes nothing, and it runs fine inside `BEGIN READ ONLY; ... ROLLBACK;`. It needs Postgres 15 or later (Supabase runs 15 and 17). It looks at every schema except Supabase's own (`auth`, `storage`, `extensions`, `graphql`, `graphql_public`, `realtime`, `supabase_functions`, `vault`, `pgsodium`, `net`, `cron`, `_realtime`, `supabase_migrations`) and Postgres system schemas. `public` is the main one. One exception: the policies on `storage.objects` decide who can upload, download and delete files, so they are checked too.
 
